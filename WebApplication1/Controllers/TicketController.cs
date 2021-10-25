@@ -50,7 +50,7 @@ namespace ApiPruebaBackend.Controllers
             }
             catch (Exception e)
             {
-
+                return BadRequest(e);
             }
             return Ok(ticket);
         }
@@ -69,7 +69,7 @@ namespace ApiPruebaBackend.Controllers
             }
             catch (Exception e)
             {
-
+                return BadRequest(e);
             }
             return CreatedAtAction("GetTicket", new { id = nuevoTicket.Id }, nuevoTicket);
         }
@@ -78,9 +78,11 @@ namespace ApiPruebaBackend.Controllers
         [HttpPut("Editar ticket")]
         public async Task<IActionResult> PutTicket(int id, [FromBody] Tickets editable)
         {
+            Tickets ticket = new Tickets();
             try
             {
-                if (id == editable.Id)
+                ticket = await _dbContext.Tickets.FindAsync(id);
+                if (ticket == null)
                 {
                     editable.FechaActualizacion = DateTime.Now;
                     _dbContext.Entry(editable).State = EntityState.Modified;
@@ -89,7 +91,7 @@ namespace ApiPruebaBackend.Controllers
             }
             catch (Exception e)
             {
-
+                return BadRequest(e);
             }
             return NoContent();
         }
@@ -112,7 +114,7 @@ namespace ApiPruebaBackend.Controllers
             }
             catch (Exception e)
             {
-
+                return BadRequest(e);
             }
             return NoContent();
         }
@@ -134,7 +136,7 @@ namespace ApiPruebaBackend.Controllers
             }
             catch (Exception e)
             {
-
+                return BadRequest(e);
             }
             return NoContent();
         }
